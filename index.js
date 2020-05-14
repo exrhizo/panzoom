@@ -566,6 +566,9 @@ function createPanZoom(domElement, options) {
   }
 
   function onTouch(e) {
+    // if client does not want to handle this event - just ignore the call
+    if (beforeMouseDown(e)) return; // exrhizo did this
+
     // let the override the touch behavior
     beforeTouch(e);
 
