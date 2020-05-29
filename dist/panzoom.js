@@ -397,15 +397,8 @@ function createPanZoom(domElement, options) {
     transform.y = size.y - ratio * (size.y - transform.y);
 
     // TODO: https://github.com/anvaka/panzoom/issues/112
-    if (bounds && boundsPadding === 1 && minZoom === 1) {
-      transform.scale *= ratio;
-      keepTransformInsideBounds();
-    } else {
-      transform.scale *= ratio
-      var transformAdjusted = keepTransformInsideBounds();
-      console.log("transformAdjusted:", transformAdjusted)
-      // if (!transformAdjusted) transform.scale *= ratio;
-    }
+    transform.scale *= ratio;
+    keepTransformInsideBounds();
 
     triggerEvent('zoom');
 
@@ -569,6 +562,9 @@ function createPanZoom(domElement, options) {
   }
 
   function onTouch(e) {
+    // if client does not want to handle this event - just ignore the call
+    if (beforeMouseDown(e)) return; // exrhizo did this
+
     // let the override the touch behavior
     beforeTouch(e);
 
@@ -804,7 +800,6 @@ function createPanZoom(domElement, options) {
       var offset = transformOrigin
         ? getTransformOriginOffset()
         : getOffsetXY(e);
-      console.log("publicZoomTo", offset.x, offset.y, scaleMultiplier, boolean(transformOrigin))
       publicZoomTo(offset.x, offset.y, scaleMultiplier);
       e.preventDefault();
     }
