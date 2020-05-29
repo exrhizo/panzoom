@@ -401,8 +401,10 @@ function createPanZoom(domElement, options) {
       transform.scale *= ratio;
       keepTransformInsideBounds();
     } else {
+      transform.scale *= ratio
       var transformAdjusted = keepTransformInsideBounds();
-      if (!transformAdjusted) transform.scale *= ratio;
+      console.log("transformAdjusted:", transformAdjusted)
+      // if (!transformAdjusted) transform.scale *= ratio;
     }
 
     triggerEvent('zoom');
@@ -802,6 +804,7 @@ function createPanZoom(domElement, options) {
       var offset = transformOrigin
         ? getTransformOriginOffset()
         : getOffsetXY(e);
+      console.log("publicZoomTo", offset.x, offset.y, scaleMultiplier, boolean(transformOrigin))
       publicZoomTo(offset.x, offset.y, scaleMultiplier);
       e.preventDefault();
     }
